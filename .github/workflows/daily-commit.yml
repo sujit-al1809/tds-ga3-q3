@@ -1,0 +1,27 @@
+name: Daily Automated Commit - 22f3002016@ds.study.iitm.ac.in
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update daily status (22f3002016@ds.study.iitm.ac.in)
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "22f3002016@ds.study.iitm.ac.in"
+          echo "Last run: $(date -u +%Y-%m-%dT%H:%M:%SZ)" > status.txt
+          git add status.txt
+          git commit --allow-empty -m "chore: daily automated commit $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          branch=$(git rev-parse --abbrev-ref HEAD)
+          git push origin HEAD:"$branch"
